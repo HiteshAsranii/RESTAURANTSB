@@ -1,0 +1,21 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "ApisApplication",
+            "request": "launch",
+            "mainClass": "com.restaurant.apis.ApisApplication",
+            "projectName": "apis"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-ApisApplication<apis>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.restraunt.apis.ApisApplication",
+            "projectName": "apis",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
