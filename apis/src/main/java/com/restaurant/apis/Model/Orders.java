@@ -34,4 +34,17 @@ public class Orders {
 
     @Column(name = "OrderTime", nullable = false)
     private LocalTime OrderTime;
+
+    @Column(name = "OrderStatus", nullable = false)
+    private String orderStatus;
+
+    @Column(name = "OrderSubTotal", nullable = false)
+    private double OrderSubTotal;
+
+    @Column(name = "Tax", nullable = false)
+    private double tax;
+
+    @Column(name = "OrderTotal", nullable = false)
+    private double OrderTotal;
+
 }

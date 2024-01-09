@@ -19,7 +19,8 @@ public class RestaurantTable {
 
     @Column(name = "TableCapacity", nullable = false)
     private int TableCapacity;
-
+    
+    //reserved for tablestatus =1 or true
     @Column(name = "TableStatus", nullable = false)
     private boolean TableStatus;
 
