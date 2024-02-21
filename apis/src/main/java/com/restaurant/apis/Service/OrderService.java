@@ -12,5 +12,6 @@ import jakarta.transaction.Transactional;
 public interface OrderService {
     public Orders createOrder(Orders order, List<OrderItems> orderItems);
     public OrderRequestWrapper getOrderDetails(int tableId);
+    public Orders updateOrder(Orders order, List<OrderItems> orderItems);
 
 }

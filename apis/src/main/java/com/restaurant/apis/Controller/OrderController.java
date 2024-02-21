@@ -8,9 +8,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.restaurant.apis.Model.OrderItems;
 import com.restaurant.apis.Model.OrderRequestWrapper;
 import com.restaurant.apis.Model.Orders;
 import com.restaurant.apis.Service.OrderService;
+
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +40,10 @@ public class OrderController {
     @GetMapping("getOrderDetails")
     public OrderRequestWrapper getorderDetails(@RequestParam int tableId){
         return orderService.getOrderDetails(tableId);
+    }
+    @PostMapping("updateOrder")
+    public Orders updateOrder(@RequestBody OrderRequestWrapper orderRequest){
+        return orderService.updateOrder(orderRequest.getOrder(), orderRequest.getOrderItems());
     }
 
 }

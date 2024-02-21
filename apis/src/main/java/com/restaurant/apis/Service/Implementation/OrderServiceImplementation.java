@@ -55,4 +55,23 @@ public class OrderServiceImplementation implements OrderService {
         return orderDetails;
     }
 
+    @Override
+    public Orders updateOrder(Orders order, List<OrderItems> orderItems) {
+        for(OrderItems o: orderItems){
+            OrderItems orderId = new OrderItems(order, o.getMenuItemId());
+            OrderItems existingItem = entityManager.find(OrderItems.class, orderId);
+
+            if (existingItem != null) {
+                // Update existing order item's quantity
+                existingItem.setQuantity(o.getQuantity());
+                entityManager.merge(existingItem);
+            } else {
+                // Persist new order item
+                o.setOrderId(order);
+                entityManager.persist(o);
+            }
+        }
+        return order;
+    }
+
 }
