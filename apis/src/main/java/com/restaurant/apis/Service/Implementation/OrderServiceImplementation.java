@@ -3,6 +3,7 @@ package com.restaurant.apis.Service.Implementation;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 import com.restaurant.apis.Model.OrderItems;
@@ -47,7 +48,6 @@ public class OrderServiceImplementation implements OrderService {
                 .createQuery("SELECT oi FROM OrderItems oi WHERE oi.OrderId.OrderId = :orderId", OrderItems.class)
                 .setParameter("orderId", order.getOrderId())
                 .getResultList();
-        
 
         OrderRequestWrapper orderDetails = new OrderRequestWrapper();
         orderDetails.setOrder(order);
@@ -57,20 +57,40 @@ public class OrderServiceImplementation implements OrderService {
 
     @Override
     public Orders updateOrder(Orders order, List<OrderItems> orderItems) {
-        for(OrderItems o: orderItems){
-            OrderItems orderId = new OrderItems(order, o.getMenuItemId());
-            OrderItems existingItem = entityManager.find(OrderItems.class, orderId);
+        // for(OrderItems o: orderItems){
+        // OrderItems orderId = new OrderItems(order, o.getMenuItemId());
+        // OrderItems existingItem = entityManager.find(OrderItems.class, orderId);
 
-            if (existingItem != null) {
-                // Update existing order item's quantity
-                existingItem.setQuantity(o.getQuantity());
-                entityManager.merge(existingItem);
-            } else {
-                // Persist new order item
-                o.setOrderId(order);
-                entityManager.persist(o);
-            }
+        // if (existingItem != null) {
+        // // Update existing order item's quantity
+        // existingItem.setQuantity(o.getQuantity());
+        // entityManager.merge(existingItem);
+        // } else {
+        // // Persist new order item
+        // o.setOrderId(order);
+        // entityManager.persist(o);
+        // }
+        // }
+        // Orders oldOrder = entityManager.find(Orders.class, order.getOrderId());
+        // oldOrder.setOrderTotal(order.getOrderTotal());
+        // oldOrder.setOrderSubTotal(order.getOrderSubTotal());
+        // oldOrder.setTax(order.getTax());
+        // entityManager.merge(oldOrder);
+        // return order;
+        List<OrderItems> ol = entityManager
+                .createQuery("Select oi from OrderItems oi where oi.OrderId.OrderId = :orderId", OrderItems.class)
+                .setParameter("orderId", order.getOrderId())
+                .getResultList();
+        for(OrderItems item: ol) entityManager.remove(item);
+        for(OrderItems item: orderItems){
+            item.setOrderId(order);
+            entityManager.persist(item);
         }
+        Orders oldOrder = entityManager.find(Orders.class, order.getOrderId());
+        oldOrder.setOrderSubTotal(order.getOrderSubTotal());
+        oldOrder.setTax(order.getTax());
+        oldOrder.setOrderTotal(order.getOrderTotal());
+        entityManager.merge(oldOrder);
         return order;
     }
 
