@@ -15,4 +15,6 @@ public interface RestaurantTableService {
     public RestaurantTable updateRestaurantTable(int restraunt_table_id, RestaurantTable restaurantTable);
 
     public List<RestaurantTable> getAllRestaurantTables();
+
+    public RestaurantTable reserveTable(int restaurant_table_id);
 }

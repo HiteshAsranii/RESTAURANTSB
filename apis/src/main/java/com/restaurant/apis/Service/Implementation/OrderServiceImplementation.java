@@ -3,7 +3,6 @@ package com.restaurant.apis.Service.Implementation;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 import com.restaurant.apis.Model.OrderItems;
@@ -14,6 +13,9 @@ import com.restaurant.apis.Service.OrderService;
 
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
+
+import jakarta.persistence.NoResultException;
+
 
 @Transactional
 @Service
@@ -38,16 +40,28 @@ public class OrderServiceImplementation implements OrderService {
 
     @Override
     public OrderRequestWrapper getOrderDetails(int tableId) {
-        Orders order = entityManager
-                .createQuery("SELECT o FROM Orders o WHERE o.TableId.TableId = :tableId",
-                        Orders.class)
-                .setParameter("tableId", tableId)
-                .getSingleResult();
+        Orders order = null;
+        List<OrderItems> orderItemsList = null;
+        try {
+            order = entityManager
+                    .createQuery("SELECT o FROM Orders o WHERE o.TableId.TableId = :tableId ORDER by o.OrderId desc limit 1",
+                            Orders.class)
+                    .setParameter("tableId", tableId)
+                    .getSingleResult();
 
-        List<OrderItems> orderItemsList = entityManager
-                .createQuery("SELECT oi FROM OrderItems oi WHERE oi.OrderId.OrderId = :orderId", OrderItems.class)
-                .setParameter("orderId", order.getOrderId())
-                .getResultList();
+            orderItemsList = entityManager
+                    .createQuery("SELECT oi FROM OrderItems oi WHERE oi.OrderId.OrderId = :orderId", OrderItems.class)
+                    .setParameter("orderId", order.getOrderId())
+                    .getResultList();
+        } catch (NoResultException e) {
+            // Handle the case where no result is found
+            // For example, you can log the error or return null
+            System.out.println("No order found for table ID: " + tableId);
+        }
+
+        if (order == null || orderItemsList == null) {
+            return null;
+        }
 
         OrderRequestWrapper orderDetails = new OrderRequestWrapper();
         orderDetails.setOrder(order);
@@ -81,8 +95,9 @@ public class OrderServiceImplementation implements OrderService {
                 .createQuery("Select oi from OrderItems oi where oi.OrderId.OrderId = :orderId", OrderItems.class)
                 .setParameter("orderId", order.getOrderId())
                 .getResultList();
-        for(OrderItems item: ol) entityManager.remove(item);
-        for(OrderItems item: orderItems){
+        for (OrderItems item : ol)
+            entityManager.remove(item);
+        for (OrderItems item : orderItems) {
             item.setOrderId(order);
             entityManager.persist(item);
         }

@@ -51,5 +51,12 @@ public class RestaurantTableServiceImplementation implements RestaurantTableServ
         List<RestaurantTable> restaurantTables = entityManager.createQuery("Select r from RestaurantTable r", RestaurantTable.class).getResultList();
         return restaurantTables;
     }
+
+    @Override
+    public RestaurantTable reserveTable(int restaurant_table_id) {
+        RestaurantTable t = entityManager.find(RestaurantTable.class, restaurant_table_id);
+        t.setTableStatus(false);
+        return t;
+    }
     
 }
