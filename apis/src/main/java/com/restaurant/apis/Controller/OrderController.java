@@ -12,6 +12,8 @@ import com.restaurant.apis.Model.OrderRequestWrapper;
 import com.restaurant.apis.Model.Orders;
 import com.restaurant.apis.Service.OrderService;
 
+import java.time.LocalDate;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,6 +44,10 @@ public class OrderController {
     @PostMapping("updateOrder")
     public Orders updateOrder(@RequestBody OrderRequestWrapper orderRequest){
         return orderService.updateOrder(orderRequest.getOrder(), orderRequest.getOrderItems());
+    }
+    @GetMapping("getOrderAfterDate")
+    public List<OrderRequestWrapper> ordersAfterDate(@RequestParam LocalDate date){
+        return orderService.getOrderByDuration(date);      
     }
 
 }

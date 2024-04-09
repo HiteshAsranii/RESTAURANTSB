@@ -1,6 +1,8 @@
 package com.restaurant.apis.Service.Implementation;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +17,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 
 import jakarta.persistence.NoResultException;
-
+import java.time.LocalDate;
 
 @Transactional
 @Service
@@ -44,7 +46,8 @@ public class OrderServiceImplementation implements OrderService {
         List<OrderItems> orderItemsList = null;
         try {
             order = entityManager
-                    .createQuery("SELECT o FROM Orders o WHERE o.TableId.TableId = :tableId ORDER by o.OrderId desc limit 1",
+                    .createQuery(
+                            "SELECT o FROM Orders o WHERE o.TableId.TableId = :tableId ORDER by o.OrderId desc limit 1",
                             Orders.class)
                     .setParameter("tableId", tableId)
                     .getSingleResult();
@@ -107,6 +110,30 @@ public class OrderServiceImplementation implements OrderService {
         oldOrder.setOrderTotal(order.getOrderTotal());
         entityManager.merge(oldOrder);
         return order;
+    }
+
+    @Override
+    public List<OrderRequestWrapper> getOrderByDuration(LocalDate date) {
+        try {
+            List<Orders> orders = entityManager
+                    .createQuery("select o from Orders o where o.OrderDate >= :date", Orders.class)
+                    .setParameter("date", date).getResultList();
+            List<OrderRequestWrapper> ordersAfterDate = new ArrayList<>();
+            for (Orders order : orders) {
+                List<OrderItems> orderItems = entityManager
+                        .createQuery("select oi from OrderItems oi where oi.OrderId.OrderId =:order", OrderItems.class)
+                        .setParameter("order", order.getOrderId()).getResultList();
+                OrderRequestWrapper orderRequestWrapper = new OrderRequestWrapper();
+                orderRequestWrapper.setOrder(order);
+                orderRequestWrapper.setOrderItems(orderItems);
+                ordersAfterDate.add(orderRequestWrapper);
+            }
+            return ordersAfterDate;
+
+        } catch (NoResultException e) {
+            return Collections.emptyList();
+        }
+
     }
 
 }
