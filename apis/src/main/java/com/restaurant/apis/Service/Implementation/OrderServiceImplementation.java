@@ -12,6 +12,7 @@ import com.restaurant.apis.Model.OrderRequestWrapper;
 import com.restaurant.apis.Model.Orders;
 import com.restaurant.apis.Model.RestaurantTable;
 import com.restaurant.apis.Service.OrderService;
+import com.restaurant.apis.WebSocket.WebSocketPublisher;
 
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
@@ -26,6 +27,9 @@ public class OrderServiceImplementation implements OrderService {
     @Autowired
     private EntityManager entityManager;
 
+    @Autowired
+    private WebSocketPublisher webSocketPublisher;
+
     @Override
     public Orders createOrder(Orders order, List<OrderItems> orderItems) {
         RestaurantTable t = entityManager.find(RestaurantTable.class, order.getTableId().getTableId());
@@ -37,6 +41,7 @@ public class OrderServiceImplementation implements OrderService {
             o.setOrderId(order);
             entityManager.persist(o);
         }
+        webSocketPublisher.sendOrderPlacedMessage();
         return order;
     }
 
@@ -109,6 +114,7 @@ public class OrderServiceImplementation implements OrderService {
         oldOrder.setTax(order.getTax());
         oldOrder.setOrderTotal(order.getOrderTotal());
         entityManager.merge(oldOrder);
+        webSocketPublisher.sendOrderUpdatedMessage();
         return order;
     }
 
