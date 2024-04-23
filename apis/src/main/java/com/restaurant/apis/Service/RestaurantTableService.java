@@ -17,4 +17,7 @@ public interface RestaurantTableService {
     public List<RestaurantTable> getAllRestaurantTables();
 
     public RestaurantTable reserveTable(int restaurant_table_id);
+
+    public RestaurantTable unReserveTable(int restaurant_table_id);
+
 }

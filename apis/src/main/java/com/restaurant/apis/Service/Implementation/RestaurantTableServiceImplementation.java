@@ -58,5 +58,12 @@ public class RestaurantTableServiceImplementation implements RestaurantTableServ
         t.setTableStatus(false);
         return t;
     }
+
+    @Override
+    public RestaurantTable unReserveTable(int restaurant_table_id) {
+        RestaurantTable t = entityManager.find(RestaurantTable.class, restaurant_table_id);
+        t.setTableStatus(true);
+        return t;
+    }
     
 }
