@@ -33,6 +33,7 @@ public class OrderServiceImplementation implements OrderService {
     @Override
     public Orders createOrder(Orders order, List<OrderItems> orderItems) {
         RestaurantTable t = entityManager.find(RestaurantTable.class, order.getTableId().getTableId());
+        //update this use restaurant table service
         t.setTableStatus(true);
         entityManager.merge(t);
         entityManager.persist(order);

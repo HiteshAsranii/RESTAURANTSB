@@ -1,10 +1,7 @@
 package com.restaurant.apis.Controller;
 
 import org.hibernate.boot.beanvalidation.IntegrationException;
-import org.json.HTTP;
-import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,8 +15,12 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.razorpay.RazorpayException;
 import com.razorpay.Utils;
+import com.restaurant.apis.Model.Orders;
 import com.restaurant.apis.Model.PaymentRequest;
+import com.restaurant.apis.Model.Payments;
 import com.restaurant.apis.Service.PaymentService;
+import com.restaurant.apis.Service.RestaurantTableService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.restaurant.apis.Model.WebhookPayload;
@@ -29,11 +30,14 @@ import com.restaurant.apis.Model.WebhookPayload;
 @CrossOrigin(origins = "http://localhost:5173/")
 public class PaymentController {
     private final PaymentService paymentService;
+    private final RestaurantTableService restaurantTableService;
+
     final Logger logger = LoggerFactory.getLogger(PaymentController.class);
 
-    public PaymentController(PaymentService paymentService) {
+    public PaymentController(PaymentService paymentService, RestaurantTableService restaurantTableService) {
         super();
         this.paymentService = paymentService;
+        this.restaurantTableService = restaurantTableService;
     }
 
     @PostMapping("createPaymentLink")
@@ -47,13 +51,26 @@ public class PaymentController {
             throws JsonMappingException, JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            // Deserializing it into Map DS.
+            // Deserializing it
             WebhookPayload webhookPayload = objectMapper.readValue(requestBody, WebhookPayload.class);
             // Print the deserialized JSON map
             System.out.println(webhookPayload);
 
             if (isValidRequest(requestBody, signature)) { // Return a success response
-                
+                Payments payment = new Payments();
+                payment.setPaymentId(webhookPayload.getPayload().getPayment().getEntity().getId());
+                payment.setRazorPayId(webhookPayload.getPayload().getPayment().getEntity().getOrderId());
+                payment.setAmount((double) (webhookPayload.getPayload().getPayment().getEntity().getAmount() / 100));
+                payment.setPaymentMethod(webhookPayload.getPayload().getPayment().getEntity().getCard().getType());
+                int restaurantOrderId = Integer.parseInt(
+                        webhookPayload.getPayload().getPayment().getEntity().getNotes().getRestaurantOrderId());
+                Orders order = new Orders();
+                order.setOrderId(restaurantOrderId);
+                payment.setOrderId(order);
+                System.out.println("payment entity---->" + payment);
+                System.out.println("Unreserving table");
+                restaurantTableService.unReserveTable(restaurantOrderId);
+
                 return new ResponseEntity<>(HttpStatus.OK);
             } else
                 return new ResponseEntity<>(HttpStatus.NON_AUTHORITATIVE_INFORMATION);

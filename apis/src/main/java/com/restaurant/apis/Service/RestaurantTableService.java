@@ -18,6 +18,6 @@ public interface RestaurantTableService {
 
     public RestaurantTable reserveTable(int restaurant_table_id);
 
-    public RestaurantTable unReserveTable(int restaurant_table_id);
+    public RestaurantTable unReserveTable(int order_id);
 
 }
