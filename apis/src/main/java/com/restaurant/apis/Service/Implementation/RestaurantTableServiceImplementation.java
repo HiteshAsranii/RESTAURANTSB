@@ -10,7 +10,6 @@ import com.restaurant.apis.Model.RestaurantTable;
 import com.restaurant.apis.Service.RestaurantTableService;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 
 @Service

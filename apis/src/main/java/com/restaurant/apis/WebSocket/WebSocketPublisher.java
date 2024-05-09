@@ -20,4 +20,10 @@ public class WebSocketPublisher {
     public void sendOrderUpdatedMessage() {
         messagingTemplate.convertAndSend("/topic/order-updated", "An order has been updated!");
     }
+    public void sendPaymentMade(){
+        messagingTemplate.convertAndSend("/topic/payment-made", "A payment has been made and a table got unreserved!");
+    }
+    public void sendKitchenStatusUpdated(){
+        messagingTemplate.convertAndSend("topic/kitchenStatus-updated", "Someone started preparing order");
+    }
 }
