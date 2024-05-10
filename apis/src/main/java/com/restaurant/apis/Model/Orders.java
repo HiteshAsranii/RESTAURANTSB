@@ -29,6 +29,12 @@ public class Orders {
     @Column(name = "CustomerName", nullable = false)
     private String CustomerName;
 
+    @Column(name = "phoneNo", nullable = false)
+    private Long phoneNo;
+
+    @Column(name = "email", nullable = false)
+    private String email;
+
     @Column(name = "OrderDate", nullable = false)
     private LocalDate OrderDate;
 

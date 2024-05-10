@@ -42,6 +42,7 @@ public class PaymentServiceImplementation implements PaymentService {
 
     private OrderService orderService;
 
+    @Autowired
     private WebSocketPublisher webSocketPublisher;
 
     public PaymentServiceImplementation(RestaurantTableService restaurantTableService, OrderService orderService) {

@@ -24,6 +24,6 @@ public class WebSocketPublisher {
         messagingTemplate.convertAndSend("/topic/payment-made", "A payment has been made and a table got unreserved!");
     }
     public void sendKitchenStatusUpdated(){
-        messagingTemplate.convertAndSend("topic/kitchenStatus-updated", "Someone started preparing order");
+        messagingTemplate.convertAndSend("/topic/kitchenStatus-updated", "Someone started preparing order");
     }
 }

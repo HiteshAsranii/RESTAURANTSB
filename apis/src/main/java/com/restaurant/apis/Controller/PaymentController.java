@@ -35,7 +35,7 @@ public class PaymentController {
    
     }
 
-    @PostMapping("createPaymentLink")
+    @PostMapping("/createPaymentLink")
     public String createPaymentLink(@RequestBody PaymentRequest paymentRequest) throws RazorpayException {
         return paymentService.createPaymentLink(paymentRequest);
     }
