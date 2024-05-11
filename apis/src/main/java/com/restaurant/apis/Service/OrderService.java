@@ -20,7 +20,7 @@ public interface OrderService {
     public OrderRequestWrapper getOrderDetails(int tableId);
     public Orders updateOrder(Orders order, List<OrderItems> orderItems);
     public List<OrderRequestWrapper> getOrderByDuration(LocalDate date);
-    public Orders changeOrderStatusToPreparing(Orders order);
+    public Orders changeOrderStatusToPreparing(int orderId);
     public Orders changeOrderStatusToComplete(Orders order);
     public List<OrderDTO> getOrdersForKitchenScheduling();
     public List<HighestSellingMenuItemByCategory> getHighestSellingMenuItemByCategory();

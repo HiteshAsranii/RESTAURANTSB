@@ -135,7 +135,8 @@ public class OrderServiceImplementation implements OrderService {
     }
 
     @Override
-    public Orders changeOrderStatusToPreparing(Orders order) {
+    public Orders changeOrderStatusToPreparing(int orderId) {
+        Orders order = entityManager.find(Orders.class, orderId);
         order.setOrderStatus("Preparing");
         webSocketPublisher.sendKitchenStatusUpdated();
         return order;
@@ -176,6 +177,7 @@ public class OrderServiceImplementation implements OrderService {
                 for (OrderItems orderItem : orderItemsEntities) {
                     OrderItemDTO orderItemDTO = new OrderItemDTO();
                     orderItemDTO.setMenuItemName(orderItem.getMenuItemId().getMenuItemName());
+                    orderItemDTO.setQuantity(orderItem.getQuantity());
                     orderItems.add(orderItemDTO);
                 }
                 orderDTO.setOrderItems(orderItems);
