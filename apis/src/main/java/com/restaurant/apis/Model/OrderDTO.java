@@ -12,6 +12,7 @@ public class OrderDTO {
     private LocalDate orderDate;
     private LocalTime orderTime;
     private List<OrderItemDTO> orderItems;
+    private RestaurantTable tableId;
 }
 
 

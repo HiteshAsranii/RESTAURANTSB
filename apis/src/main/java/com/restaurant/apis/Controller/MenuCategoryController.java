@@ -33,17 +33,17 @@ public class MenuCategoryController {
         return menuCategoryService.addMenuCategory(menuCategoryList);
     }
 
-    @PostMapping("updateMenuCategory")
+    @PostMapping("/updateMenuCategory")
     public MenuCategory updMenuCategory(@RequestParam int menu_category_id, @RequestBody MenuCategory menuCategory){
         return menuCategoryService.updateMenuCategory(menu_category_id, menuCategory);    
     }
 
-    @GetMapping("getAllMenuCategories")
+    @GetMapping("/getAllMenuCategories")
     public List<MenuCategory> getAllMenuCategories(){
         return menuCategoryService.getAllMenuCategories();
     }
 
-    @DeleteMapping("deleteMenuCategory")
+    @DeleteMapping("/deleteMenuCategory")
     public ResponseEntity<String> deleteMenuCategory(@RequestParam int MenuCategoryid){
         String res = menuCategoryService.deleteMenuCategory(MenuCategoryid);
         return new ResponseEntity<String>(res, HttpStatus.OK);        

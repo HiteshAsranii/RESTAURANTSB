@@ -165,6 +165,7 @@ public class OrderServiceImplementation implements OrderService {
                 orderDTO.setOrderId(order.getOrderId());
                 orderDTO.setOrderDate(order.getOrderDate());
                 orderDTO.setOrderTime(order.getOrderTime());
+                orderDTO.setTableId(order.getTableId());
 
                 // Fetch order items associated with the current order
                 List<OrderItemDTO> orderItems = new ArrayList<>();
