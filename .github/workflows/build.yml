@@ -13,13 +13,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+          fetch-depth: 0  # Shallow clones should be disabled for better analysis relevance
       
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: 17
-          distribution: 'zulu'  # Alternative distribution options are available.
+          distribution: 'zulu'  # Use any other distribution if required.
       
       - name: Cache SonarCloud packages
         uses: actions/cache@v4
@@ -35,11 +35,12 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
 
-      # Build and analyze with tests disabled
+      # Build and analyze with test cases disabled
       - name: Build and analyze
-        working-directory: ./apis
+        working-directory: ./apis  # Ensure this points to where your `pom.xml` resides
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # To retrieve PR details
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}    # Your SonarCloud token
         run: mvn -B -DskipTests=true verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
-             -Dsonar.projectKey=HiteshAsranii_RESTAURANTSB
+             -Dsonar.projectKey=HiteshAsranii_RESTAURANTSB \
+             -Dsonar.organization=your-organization-key
