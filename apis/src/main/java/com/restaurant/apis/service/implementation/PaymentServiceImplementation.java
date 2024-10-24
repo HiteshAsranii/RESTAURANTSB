@@ -15,8 +15,7 @@ import jakarta.transaction.Transactional;
 import org.hibernate.boot.beanvalidation.IntegrationException;
 import org.json.JSONObject;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,7 +52,6 @@ public class PaymentServiceImplementation implements PaymentService {
 
     @Override
     public String createPaymentLink(PaymentRequest paymentRequest) throws RazorpayException {
-        final Logger logger = LoggerFactory.getLogger(PaymentServiceImplementation.class);
 
         RazorpayClient razorpay = null;
         try {
@@ -87,7 +85,6 @@ public class PaymentServiceImplementation implements PaymentService {
         PaymentLink payment = null;
         try {
             payment = razorpay.paymentLink.create(paymentLinkRequest);
-            // logger.info(payment.toString());
 
         } catch (RazorpayException e) {
             // TODO Auto-generated catch block
@@ -103,7 +100,6 @@ public class PaymentServiceImplementation implements PaymentService {
         final Logger logger = LoggerFactory.getLogger(PaymentServiceImplementation.class);
 
         ObjectMapper objectMapper = new ObjectMapper();
-        logger.info(requestBody);
         try {
             // Deserializing it
             WebhookPayload webhookPayload = objectMapper.readValue(requestBody, WebhookPayload.class);
