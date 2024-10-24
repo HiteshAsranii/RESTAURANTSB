@@ -1,14 +1,11 @@
-package com.restaurant.apis.model;
+package com.restaurant.apis.Model;
 
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
 import lombok.Data;
 
 @Data
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class PaymentRequest {
     
 

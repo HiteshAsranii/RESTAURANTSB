@@ -1,4 +1,4 @@
-package com.restaurant.apis.controller;
+package com.restaurant.apis.Controller;
 
 import java.util.List;
 
@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.restaurant.apis.model.MenuItem;
-import com.restaurant.apis.service.MenuItemService;
+import com.restaurant.apis.Model.MenuItem;
+import com.restaurant.apis.Service.MenuItemService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173/")

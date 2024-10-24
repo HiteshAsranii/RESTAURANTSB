@@ -1,4 +1,4 @@
-package com.restaurant.apis.model;
+package com.restaurant.apis.Model;
 
 
 import jakarta.persistence.Column;

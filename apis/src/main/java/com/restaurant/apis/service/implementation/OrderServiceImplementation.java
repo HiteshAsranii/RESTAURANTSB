@@ -1,4 +1,4 @@
-package com.restaurant.apis.service.implementation;
+package com.restaurant.apis.Service.Implementation;
 
 import java.util.Collections;
 import java.util.List;
@@ -7,18 +7,18 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.restaurant.apis.Model.DailySales;
+import com.restaurant.apis.Model.HighestSellingMenuItemByCategory;
+import com.restaurant.apis.Model.MonthlySales;
+import com.restaurant.apis.Model.OrderDTO;
+import com.restaurant.apis.Model.OrderItemDTO;
+import com.restaurant.apis.Model.OrderItems;
+import com.restaurant.apis.Model.OrderRequestWrapper;
+import com.restaurant.apis.Model.Orders;
+import com.restaurant.apis.Model.RestaurantTable;
+import com.restaurant.apis.Model.YearlySales;
+import com.restaurant.apis.Service.OrderService;
 import com.restaurant.apis.WebSocket.WebSocketPublisher;
-import com.restaurant.apis.model.DailySales;
-import com.restaurant.apis.model.HighestSellingMenuItemByCategory;
-import com.restaurant.apis.model.MonthlySales;
-import com.restaurant.apis.model.OrderDTO;
-import com.restaurant.apis.model.OrderItemDTO;
-import com.restaurant.apis.model.OrderItems;
-import com.restaurant.apis.model.OrderRequestWrapper;
-import com.restaurant.apis.model.Orders;
-import com.restaurant.apis.model.RestaurantTable;
-import com.restaurant.apis.model.YearlySales;
-import com.restaurant.apis.service.OrderService;
 
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;

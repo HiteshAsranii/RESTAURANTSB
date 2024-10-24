@@ -1,13 +1,13 @@
-package com.restaurant.apis.service.implementation;
+package com.restaurant.apis.Service.Implementation;
 
+import com.restaurant.apis.Model.Orders;
+import com.restaurant.apis.Model.PaymentRequest;
+import com.restaurant.apis.Model.Payments;
+import com.restaurant.apis.Model.WebhookPayload;
+import com.restaurant.apis.Service.OrderService;
+import com.restaurant.apis.Service.PaymentService;
+import com.restaurant.apis.Service.RestaurantTableService;
 import com.restaurant.apis.WebSocket.WebSocketPublisher;
-import com.restaurant.apis.model.Orders;
-import com.restaurant.apis.model.PaymentRequest;
-import com.restaurant.apis.model.Payments;
-import com.restaurant.apis.model.WebhookPayload;
-import com.restaurant.apis.service.OrderService;
-import com.restaurant.apis.service.PaymentService;
-import com.restaurant.apis.service.RestaurantTableService;
 
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
@@ -15,7 +15,8 @@ import jakarta.transaction.Transactional;
 import org.hibernate.boot.beanvalidation.IntegrationException;
 import org.json.JSONObject;
 
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,10 +53,11 @@ public class PaymentServiceImplementation implements PaymentService {
 
     @Override
     public String createPaymentLink(PaymentRequest paymentRequest) throws RazorpayException {
+        final Logger logger = LoggerFactory.getLogger(PaymentServiceImplementation.class);
 
         RazorpayClient razorpay = null;
         try {
-            razorpay = new RazorpayClient("rzp_test_2v0yS6QSuSbDaE", "pd8hkJNQNWgz02TUmAMLp5oJ");
+            razorpay = new RazorpayClient("rzp_test_y0N9K4UuqYFAor", "x4aoRpRLzjlW2YC290DNjbxZ");
         } catch (RazorpayException e) {
             e.printStackTrace();
         }
@@ -85,10 +87,11 @@ public class PaymentServiceImplementation implements PaymentService {
         PaymentLink payment = null;
         try {
             payment = razorpay.paymentLink.create(paymentLinkRequest);
+            logger.info(payment.toString());
 
         } catch (RazorpayException e) {
             // TODO Auto-generated catch block
-            // e.printStackTrace();
+            e.printStackTrace();
             return e.toString();
         }
         return payment.toString();
@@ -97,8 +100,6 @@ public class PaymentServiceImplementation implements PaymentService {
     @Override
     public ResponseEntity<Object> verifyPayment(String requestBody, String Signature)
             throws JsonMappingException, JsonProcessingException {
-        final Logger logger = LoggerFactory.getLogger(PaymentServiceImplementation.class);
-
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             // Deserializing it
@@ -119,10 +120,10 @@ public class PaymentServiceImplementation implements PaymentService {
                 System.out.println("payment entity---->" + payment);
                 System.out.println("Unreserving table");
                 restaurantTableService.unReserveTable(restaurantOrderId);
-                // persisting the payment details
+                //persisting the payment details
                 entityManager.persist(payment);
                 orderService.changeOrderStatusToComplete(order);
-                // notify all users when a payment is made and table is unreserved.
+                //notify all users when a payment is made and table is unreserved.
                 webSocketPublisher.sendPaymentMade();
 
                 return new ResponseEntity<>(HttpStatus.OK);

@@ -1,7 +1,7 @@
-package com.restaurant.apis.service;
+package com.restaurant.apis.Service;
 
 
-import com.restaurant.apis.model.User;
+import com.restaurant.apis.Model.User;
 
 import jakarta.transaction.Transactional;
 

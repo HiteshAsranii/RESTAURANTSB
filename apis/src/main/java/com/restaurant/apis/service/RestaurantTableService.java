@@ -1,8 +1,8 @@
-package com.restaurant.apis.service;
+package com.restaurant.apis.Service;
 
 import java.util.List;
 
-import com.restaurant.apis.model.RestaurantTable;
+import com.restaurant.apis.Model.RestaurantTable;
 
 import jakarta.transaction.Transactional;
 

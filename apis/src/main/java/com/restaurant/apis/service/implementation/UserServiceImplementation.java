@@ -1,14 +1,14 @@
-package com.restaurant.apis.service.implementation;
+package com.restaurant.apis.Service.Implementation;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.restaurant.apis.model.Roles;
-import com.restaurant.apis.model.User;
-import com.restaurant.apis.model.UserRoles;
-import com.restaurant.apis.service.UserService;
+import com.restaurant.apis.Model.Roles;
+import com.restaurant.apis.Model.User;
+import com.restaurant.apis.Model.UserRoles;
+import com.restaurant.apis.Service.UserService;
 
 import jakarta.persistence.EntityManager;
 
