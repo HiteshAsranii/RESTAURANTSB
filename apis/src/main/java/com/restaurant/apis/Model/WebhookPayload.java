@@ -1,12 +1,14 @@
 package com.restaurant.apis.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class WebhookPayload {
     @JsonProperty("account_id")
     private String accountId;
@@ -82,6 +84,8 @@ public class WebhookPayload {
         private String reward;
         @JsonProperty("base_amount")
         private int baseAmount;
+        @JsonProperty("emi_plan")
+        private Object emiPlan;
 
     }
 
@@ -115,4 +119,5 @@ public class WebhookPayload {
         @JsonProperty("token_iin")
         private String tokenIin;
     }
+
 }

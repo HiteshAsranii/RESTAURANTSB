@@ -57,7 +57,7 @@ public class PaymentServiceImplementation implements PaymentService {
 
         RazorpayClient razorpay = null;
         try {
-            razorpay = new RazorpayClient("rzp_test_y0N9K4UuqYFAor", "x4aoRpRLzjlW2YC290DNjbxZ");
+            razorpay = new RazorpayClient("rzp_test_2v0yS6QSuSbDaE", "pd8hkJNQNWgz02TUmAMLp5oJ");
         } catch (RazorpayException e) {
             e.printStackTrace();
         }
@@ -87,11 +87,11 @@ public class PaymentServiceImplementation implements PaymentService {
         PaymentLink payment = null;
         try {
             payment = razorpay.paymentLink.create(paymentLinkRequest);
-            logger.info(payment.toString());
+            // logger.info(payment.toString());
 
         } catch (RazorpayException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            // e.printStackTrace();
             return e.toString();
         }
         return payment.toString();
@@ -100,7 +100,10 @@ public class PaymentServiceImplementation implements PaymentService {
     @Override
     public ResponseEntity<Object> verifyPayment(String requestBody, String Signature)
             throws JsonMappingException, JsonProcessingException {
+        final Logger logger = LoggerFactory.getLogger(PaymentServiceImplementation.class);
+
         ObjectMapper objectMapper = new ObjectMapper();
+        logger.info(requestBody);
         try {
             // Deserializing it
             WebhookPayload webhookPayload = objectMapper.readValue(requestBody, WebhookPayload.class);
@@ -120,10 +123,10 @@ public class PaymentServiceImplementation implements PaymentService {
                 System.out.println("payment entity---->" + payment);
                 System.out.println("Unreserving table");
                 restaurantTableService.unReserveTable(restaurantOrderId);
-                //persisting the payment details
+                // persisting the payment details
                 entityManager.persist(payment);
                 orderService.changeOrderStatusToComplete(order);
-                //notify all users when a payment is made and table is unreserved.
+                // notify all users when a payment is made and table is unreserved.
                 webSocketPublisher.sendPaymentMade();
 
                 return new ResponseEntity<>(HttpStatus.OK);
