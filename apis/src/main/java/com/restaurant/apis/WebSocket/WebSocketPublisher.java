@@ -1,4 +1,4 @@
-package com.restaurant.apis.WebSocket;
+package com.restaurant.apis.websocket;
 
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;

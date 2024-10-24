@@ -1,13 +1,13 @@
-package com.restaurant.apis.Service.Implementation;
+package com.restaurant.apis.service.implementation;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.restaurant.apis.Model.Orders;
-import com.restaurant.apis.Model.RestaurantTable;
-import com.restaurant.apis.Service.RestaurantTableService;
+import com.restaurant.apis.model.Orders;
+import com.restaurant.apis.model.RestaurantTable;
+import com.restaurant.apis.service.RestaurantTableService;
 
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;

@@ -1,13 +1,13 @@
-package com.restaurant.apis.Service.Implementation;
+package com.restaurant.apis.service.implementation;
 
-import com.restaurant.apis.Model.Orders;
-import com.restaurant.apis.Model.PaymentRequest;
-import com.restaurant.apis.Model.Payments;
-import com.restaurant.apis.Model.WebhookPayload;
-import com.restaurant.apis.Service.OrderService;
-import com.restaurant.apis.Service.PaymentService;
-import com.restaurant.apis.Service.RestaurantTableService;
-import com.restaurant.apis.WebSocket.WebSocketPublisher;
+import com.restaurant.apis.model.Orders;
+import com.restaurant.apis.model.PaymentRequest;
+import com.restaurant.apis.model.Payments;
+import com.restaurant.apis.model.WebhookPayload;
+import com.restaurant.apis.service.OrderService;
+import com.restaurant.apis.service.PaymentService;
+import com.restaurant.apis.service.RestaurantTableService;
+import com.restaurant.apis.websocket.WebSocketPublisher;
 
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;

@@ -1,4 +1,4 @@
-package com.restaurant.apis.Controller;
+package com.restaurant.apis.controller;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,14 +8,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.restaurant.apis.Model.DailySales;
-import com.restaurant.apis.Model.HighestSellingMenuItemByCategory;
-import com.restaurant.apis.Model.MonthlySales;
-import com.restaurant.apis.Model.OrderDTO;
-import com.restaurant.apis.Model.OrderRequestWrapper;
-import com.restaurant.apis.Model.Orders;
-import com.restaurant.apis.Model.YearlySales;
-import com.restaurant.apis.Service.OrderService;
+import com.restaurant.apis.model.DailySales;
+import com.restaurant.apis.model.HighestSellingMenuItemByCategory;
+import com.restaurant.apis.model.MonthlySales;
+import com.restaurant.apis.model.OrderDTO;
+import com.restaurant.apis.model.OrderRequestWrapper;
+import com.restaurant.apis.model.Orders;
+import com.restaurant.apis.model.YearlySales;
+import com.restaurant.apis.service.OrderService;
 
 import java.time.LocalDate;
 import java.util.List;

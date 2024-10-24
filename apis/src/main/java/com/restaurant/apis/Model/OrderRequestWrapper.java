@@ -1,4 +1,4 @@
-package com.restaurant.apis.Model;
+package com.restaurant.apis.model;
 
 import java.util.List;
 import lombok.Data;

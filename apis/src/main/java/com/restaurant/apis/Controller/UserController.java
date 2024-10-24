@@ -1,4 +1,4 @@
-package com.restaurant.apis.Controller;
+package com.restaurant.apis.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.restaurant.apis.Model.User;
-import com.restaurant.apis.Service.UserService;
+import com.restaurant.apis.model.User;
+import com.restaurant.apis.service.UserService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173/")

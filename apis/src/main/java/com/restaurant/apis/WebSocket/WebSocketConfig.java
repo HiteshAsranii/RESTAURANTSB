@@ -1,4 +1,4 @@
-package com.restaurant.apis.WebSocket;
+package com.restaurant.apis.websocket;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;

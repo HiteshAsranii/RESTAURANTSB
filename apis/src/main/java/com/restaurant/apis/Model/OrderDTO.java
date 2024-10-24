@@ -1,4 +1,4 @@
-package com.restaurant.apis.Model;
+package com.restaurant.apis.model;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

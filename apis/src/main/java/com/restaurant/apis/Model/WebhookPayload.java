@@ -1,4 +1,4 @@
-package com.restaurant.apis.Model;
+package com.restaurant.apis.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

@@ -1,4 +1,4 @@
-package com.restaurant.apis.Model;
+package com.restaurant.apis.model;
 
 import lombok.Data;
 

@@ -1,4 +1,4 @@
-package com.restaurant.apis.Controller;
+package com.restaurant.apis.controller;
 
 import org.hibernate.boot.beanvalidation.IntegrationException;
 import org.springframework.http.HttpStatus;
@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.razorpay.RazorpayException;
-import com.restaurant.apis.Model.PaymentRequest;
-import com.restaurant.apis.Service.PaymentService;
-import com.restaurant.apis.Service.RestaurantTableService;
+import com.restaurant.apis.model.PaymentRequest;
+import com.restaurant.apis.service.PaymentService;
+import com.restaurant.apis.service.RestaurantTableService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

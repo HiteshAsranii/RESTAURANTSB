@@ -1,16 +1,16 @@
-package com.restaurant.apis.Service;
+package com.restaurant.apis.service;
 
 import java.time.LocalDate;
 import java.util.List;
 
-import com.restaurant.apis.Model.DailySales;
-import com.restaurant.apis.Model.HighestSellingMenuItemByCategory;
-import com.restaurant.apis.Model.MonthlySales;
-import com.restaurant.apis.Model.OrderDTO;
-import com.restaurant.apis.Model.OrderItems;
-import com.restaurant.apis.Model.OrderRequestWrapper;
-import com.restaurant.apis.Model.Orders;
-import com.restaurant.apis.Model.YearlySales;
+import com.restaurant.apis.model.DailySales;
+import com.restaurant.apis.model.HighestSellingMenuItemByCategory;
+import com.restaurant.apis.model.MonthlySales;
+import com.restaurant.apis.model.OrderDTO;
+import com.restaurant.apis.model.OrderItems;
+import com.restaurant.apis.model.OrderRequestWrapper;
+import com.restaurant.apis.model.Orders;
+import com.restaurant.apis.model.YearlySales;
 
 import jakarta.transaction.Transactional;
 

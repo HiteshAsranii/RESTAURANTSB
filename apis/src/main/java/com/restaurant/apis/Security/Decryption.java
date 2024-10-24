@@ -1,4 +1,4 @@
-package com.restaurant.apis.Security;
+package com.restaurant.apis.security;
 
 import java.security.PrivateKey;
 import java.security.KeyFactory;
