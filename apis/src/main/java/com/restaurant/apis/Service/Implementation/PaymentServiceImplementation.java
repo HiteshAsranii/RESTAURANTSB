@@ -15,8 +15,7 @@ import jakarta.transaction.Transactional;
 import org.hibernate.boot.beanvalidation.IntegrationException;
 import org.json.JSONObject;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,13 +52,11 @@ public class PaymentServiceImplementation implements PaymentService {
 
     @Override
     public String createPaymentLink(PaymentRequest paymentRequest) throws RazorpayException {
-        final Logger logger = LoggerFactory.getLogger(PaymentServiceImplementation.class);
 
         RazorpayClient razorpay = null;
         try {
             razorpay = new RazorpayClient("rzp_test_y0N9K4UuqYFAor", "x4aoRpRLzjlW2YC290DNjbxZ");
         } catch (RazorpayException e) {
-            e.printStackTrace();
         }
         JSONObject paymentLinkRequest = new JSONObject();
         paymentLinkRequest.put("amount", paymentRequest.getAmount() * 100);
@@ -87,11 +84,9 @@ public class PaymentServiceImplementation implements PaymentService {
         PaymentLink payment = null;
         try {
             payment = razorpay.paymentLink.create(paymentLinkRequest);
-            logger.info(payment.toString());
 
         } catch (RazorpayException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
             return e.toString();
         }
         return payment.toString();
@@ -131,7 +126,6 @@ public class PaymentServiceImplementation implements PaymentService {
                 return new ResponseEntity<>(HttpStatus.NON_AUTHORITATIVE_INFORMATION);
         } catch (IntegrationException e) {
             // Error handling for failed deserialization
-            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -141,7 +135,6 @@ public class PaymentServiceImplementation implements PaymentService {
         try {
             return Utils.verifyWebhookSignature(requestBody, signature, "123456789");
         } catch (RazorpayException e) {
-            e.printStackTrace();
             return false;
         }
     }
