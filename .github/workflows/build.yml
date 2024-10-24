@@ -41,6 +41,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # To retrieve PR details
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}    # Your SonarCloud token
-        run: mvn -B -DskipTests=true verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
-             -Dsonar.projectKey=HiteshAsranii_RESTAURANTSB \
-             -Dsonar.organization=your-organization-key
+        run: mvn -B -DskipTests=true  verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=HiteshAsranii_RESTAURANTSB
