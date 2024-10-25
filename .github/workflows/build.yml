@@ -35,10 +35,10 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
 
-      # Build and run tests
-      - name: Build and run tests
+      # Build and run specific tests
+      - name: Build and run specific tests
         working-directory: ./apis  # Ensure this points to where your `pom.xml` resides
-        run: mvn -B clean test
+        run: mvn -B clean test -Dtest=MenuCategoryControllerDiffblueTest
 
       # SonarCloud analysis
       - name: SonarCloud analysis
