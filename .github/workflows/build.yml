@@ -40,12 +40,6 @@ jobs:
         working-directory: ./apis
         run: mvn -B clean test -Dtest=MenuCategoryControllerDiffblueTest
 
-      - name: Run tests with coverage
-        working-directory: ./apis
-        run: mvn clean verify org.jacoco:jacoco-maven-plugin:prepare-agent org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
-          -Dsonar.projectKey=HiteshAsranii_RESTAURANTSB \
-          -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
-
       # SonarCloud analysis
       - name: SonarCloud analysis
         working-directory: ./apis
