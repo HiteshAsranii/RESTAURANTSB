@@ -1,5 +1,6 @@
 package com.restaurant.apis.Controller;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.when;
 
@@ -78,20 +79,29 @@ class MenuCategoryControllerDiffblueTest {
         menuCategory2.setMenuCategoryId(1);
         menuCategory2.setMenuCategoryName("Menu Category Name");
         String content = (new ObjectMapper()).writeValueAsString(menuCategory2);
+
         MockHttpServletRequestBuilder postResult = MockMvcRequestBuilders.post("/menu-categories/updateMenuCategory");
         MockHttpServletRequestBuilder requestBuilder = postResult.param("menu_category_id", String.valueOf(1))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
 
         // Act and Assert
-        MockMvcBuilders.standaloneSetup(menuCategoryController)
+        String actualResponse = MockMvcBuilders.standaloneSetup(menuCategoryController)
                 .build()
                 .perform(requestBuilder)
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
-                .andExpect(MockMvcResultMatchers.content()
-                        .string("{\"menuCategoryName\":\"Menu Category Name\",\"menuCategoryId\":1}"));
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        // Use Jackson ObjectMapper to compare JSON content ignoring order
+        ObjectMapper objectMapper = new ObjectMapper();
+        String expectedResponse = "{\"menuCategoryId\":1,\"menuCategoryName\":\"Menu Category Name\"}";
+
+        assertEquals(objectMapper.readTree(expectedResponse), objectMapper.readTree(actualResponse));
     }
+
 
     /**
      * Test {@link MenuCategoryController#getAllMenuCategories()}.
