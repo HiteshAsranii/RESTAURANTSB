@@ -38,7 +38,7 @@ jobs:
       # Build and run specific tests
       - name: Build and run specific tests
         working-directory: ./apis
-        run: mvn -B clean test -Dtest=MenuCategoryControllerDiffblueTest, MenuItemControllerDiffblueTest, OrderControllerDiffblueTest
+        run: mvn -B clean test -Dtest=MenuCategoryControllerDiffblueTest,MenuItemControllerDiffblueTest,OrderControllerDiffblueTest
 
 
       # SonarCloud analysis
