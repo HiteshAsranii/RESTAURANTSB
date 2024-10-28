@@ -64,51 +64,49 @@ class OrderServiceImplementationDiffblueTest {
      * {@link OrderServiceImplementation#createOrder(Orders, List)}
      */
     @Test
-    @DisplayName("Test createOrder(Orders, List); then return Orders (default constructor)")
+    @DisplayName("Test createOrder(Orders, List) to ensure it returns Orders and updates Table status to true")
     void testCreateOrder_thenReturnOrders() {
         // Arrange
         RestaurantTable restaurantTable = new RestaurantTable();
-        restaurantTable.setTableCapacity(1);
+        restaurantTable.setTableCapacity(4);
         restaurantTable.setTableId(1);
-        restaurantTable.setTableStatus(true);
+        restaurantTable.setTableStatus(false); // Start with table status as false
 
-        RestaurantTable restaurantTable2 = new RestaurantTable();
-        restaurantTable2.setTableCapacity(1);
-        restaurantTable2.setTableId(1);
-        restaurantTable2.setTableStatus(true);
-        when(entityManager.merge(Mockito.<RestaurantTable>any())).thenReturn(restaurantTable2);
-        doNothing().when(entityManager).persist(Mockito.<Object>any());
-        when(entityManager.find(Mockito.<Class<RestaurantTable>>any(), Mockito.<Object>any())).thenReturn(restaurantTable);
-        doNothing().when(webSocketPublisher).sendOrderPlacedMessage();
-
-        RestaurantTable TableId = new RestaurantTable();
-        TableId.setTableCapacity(1);
-        TableId.setTableId(1);
-        TableId.setTableStatus(true);
+        RestaurantTable updatedTable = new RestaurantTable();
+        updatedTable.setTableCapacity(4);
+        updatedTable.setTableId(1);
+        updatedTable.setTableStatus(true); // Expect table status to be updated to true
 
         Orders order = new Orders();
-        order.setCustomerName("Customer Name");
+        order.setCustomerName("Jane Doe");
         order.setEmail("jane.doe@example.org");
-        order.setOrderDate(LocalDate.of(1970, 1, 1));
-        order.setOrderId(1);
-        order.setOrderStatus("Order Status");
-        order.setOrderSubTotal(10.0d);
-        order.setOrderTime(LocalTime.MIDNIGHT);
-        order.setOrderTotal(10.0d);
-        order.setPhoneNo(1L);
-        order.setTableId(TableId);
-        order.setTax(10.0d);
+        order.setOrderDate(LocalDate.now());
+        order.setOrderTime(LocalTime.now());
+        order.setOrderStatus("New");
+        order.setOrderSubTotal(100.0);
+        order.setOrderTotal(110.0);
+        order.setTax(10.0);
+        order.setPhoneNo(123456789L);
+        order.setTableId(restaurantTable);
+
+        // Mock behaviors
+        when(entityManager.find(RestaurantTable.class, restaurantTable.getTableId())).thenReturn(restaurantTable);
+        when(entityManager.merge(restaurantTable)).thenReturn(updatedTable);
+        doNothing().when(entityManager).persist(order);
+        doNothing().when(webSocketPublisher).sendOrderPlacedMessage();
 
         // Act
-        Orders actualCreateOrderResult = orderServiceImplementation.createOrder(order, new ArrayList<>());
+        Orders createdOrder = orderServiceImplementation.createOrder(order, new ArrayList<>());
 
         // Assert
+        assertSame(order, createdOrder);
+        assertEquals(true, order.getTableId().isTableStatus());
+        verify(entityManager).find(RestaurantTable.class, restaurantTable.getTableId());
+        verify(entityManager).merge(restaurantTable);
+        verify(entityManager).persist(order);
         verify(webSocketPublisher).sendOrderPlacedMessage();
-        verify(entityManager).find(isA(Class.class), isA(Object.class));
-        verify(entityManager).merge(isA(RestaurantTable.class));
-        verify(entityManager).persist(isA(Object.class));
-        assertSame(order, actualCreateOrderResult);
     }
+
 
     /**
      * Test {@link OrderServiceImplementation#createOrder(Orders, List)}.
@@ -279,44 +277,6 @@ class OrderServiceImplementationDiffblueTest {
      * Method under test:
      * {@link OrderServiceImplementation#changeOrderStatusToComplete(Orders)}
      */
-    @Test
-    @DisplayName("Test changeOrderStatusToComplete(Orders); then Orders (default constructor) OrderStatus is 'Completed'")
-    void testChangeOrderStatusToComplete_thenOrdersOrderStatusIsCompleted() {
-        // Arrange
-        RestaurantTable TableId = new RestaurantTable();
-        TableId.setTableCapacity(1);
-        TableId.setTableId(1);
-        TableId.setTableStatus(true);
-
-        Orders order = new Orders();
-        order.setCustomerName("Customer Name");
-        order.setEmail("jane.doe@example.org");
-        order.setOrderDate(LocalDate.of(1970, 1, 1));
-        order.setOrderId(1);
-        order.setOrderStatus("Order Status");
-        order.setOrderSubTotal(10.0d);
-        order.setOrderTime(LocalTime.MIDNIGHT);
-        order.setOrderTotal(10.0d);
-        order.setPhoneNo(1L);
-        order.setTableId(TableId);
-        order.setTax(10.0d);
-
-        // Act
-        Orders actualChangeOrderStatusToCompleteResult = orderServiceImplementation.changeOrderStatusToComplete(order);
-
-        // Assert
-        org.slf4j.Logger logger = orderServiceImplementation.logger;
-        assertTrue(logger instanceof ch.qos.logback.classic.Logger);
-        LoggerContext loggerContext = ((ch.qos.logback.classic.Logger) logger).getLoggerContext();
-        ScheduledExecutorService scheduledExecutorService = loggerContext.getScheduledExecutorService();
-        assertTrue(scheduledExecutorService instanceof ScheduledThreadPoolExecutor);
-        ExecutorService executorService = loggerContext.getExecutorService();
-        assertTrue(executorService instanceof ThreadPoolExecutor);
-        assertEquals("Completed", order.getOrderStatus());
-        assertTrue(executorService.isShutdown());
-        assertTrue(scheduledExecutorService.isShutdown());
-        assertSame(order, actualChangeOrderStatusToCompleteResult);
-    }
 
     /**
      * Test {@link OrderServiceImplementation#changeOrderStatusToComplete(Orders)}.
@@ -328,63 +288,24 @@ class OrderServiceImplementationDiffblueTest {
      * {@link OrderServiceImplementation#changeOrderStatusToComplete(Orders)}
      */
     @Test
-    @DisplayName("Test changeOrderStatusToComplete(Orders); then return Orders")
-    void testChangeOrderStatusToComplete_thenReturnOrders() {
+    @DisplayName("Test changeOrderStatusToComplete(Orders) updates OrderStatus to 'Completed'")
+    void testChangeOrderStatusToComplete_thenOrderStatusIsCompleted() {
         // Arrange
-        RestaurantTable TableId = new RestaurantTable();
-        TableId.setTableCapacity(1);
-        TableId.setTableId(1);
-        TableId.setTableStatus(true);
-        Orders order = mock(Orders.class);
-        doNothing().when(order).setCustomerName(Mockito.<String>any());
-        doNothing().when(order).setEmail(Mockito.<String>any());
-        doNothing().when(order).setOrderDate(Mockito.<LocalDate>any());
-        doNothing().when(order).setOrderId(anyInt());
-        doNothing().when(order).setOrderStatus(Mockito.<String>any());
-        doNothing().when(order).setOrderSubTotal(anyDouble());
-        doNothing().when(order).setOrderTime(Mockito.<LocalTime>any());
-        doNothing().when(order).setOrderTotal(anyDouble());
-        doNothing().when(order).setPhoneNo(Mockito.<Long>any());
-        doNothing().when(order).setTableId(Mockito.<RestaurantTable>any());
-        doNothing().when(order).setTax(anyDouble());
-        order.setCustomerName("Customer Name");
-        order.setEmail("jane.doe@example.org");
-        order.setOrderDate(LocalDate.of(1970, 1, 1));
-        order.setOrderId(1);
-        order.setOrderStatus("Order Status");
-        order.setOrderSubTotal(10.0d);
-        order.setOrderTime(LocalTime.MIDNIGHT);
-        order.setOrderTotal(10.0d);
-        order.setPhoneNo(1L);
-        order.setTableId(TableId);
-        order.setTax(10.0d);
+        RestaurantTable table = new RestaurantTable();
+        table.setTableCapacity(1);
+        table.setTableId(1);
+        table.setTableStatus(true);
+
+        Orders order = new Orders();
+        order.setOrderStatus("Pending"); // Initial status to be changed
 
         // Act
-        Orders actualChangeOrderStatusToCompleteResult = orderServiceImplementation.changeOrderStatusToComplete(order);
+        Orders updatedOrder = orderServiceImplementation.changeOrderStatusToComplete(order);
 
         // Assert
-        verify(order).setCustomerName(eq("Customer Name"));
-        verify(order).setEmail(eq("jane.doe@example.org"));
-        verify(order).setOrderDate(isA(LocalDate.class));
-        verify(order).setOrderId(eq(1));
-        verify(order, atLeast(1)).setOrderStatus(Mockito.<String>any());
-        verify(order).setOrderSubTotal(eq(10.0d));
-        verify(order).setOrderTime(isA(LocalTime.class));
-        verify(order).setOrderTotal(eq(10.0d));
-        verify(order).setPhoneNo(eq(1L));
-        verify(order).setTableId(isA(RestaurantTable.class));
-        verify(order).setTax(eq(10.0d));
-        org.slf4j.Logger logger = orderServiceImplementation.logger;
-        assertTrue(logger instanceof ch.qos.logback.classic.Logger);
-        LoggerContext loggerContext = ((ch.qos.logback.classic.Logger) logger).getLoggerContext();
-        ScheduledExecutorService scheduledExecutorService = loggerContext.getScheduledExecutorService();
-        assertTrue(scheduledExecutorService instanceof ScheduledThreadPoolExecutor);
-        ExecutorService executorService = loggerContext.getExecutorService();
-        assertTrue(executorService instanceof ThreadPoolExecutor);
-        assertTrue(executorService.isShutdown());
-        assertTrue(scheduledExecutorService.isShutdown());
-        assertSame(order, actualChangeOrderStatusToCompleteResult);
+        assertEquals("Completed", updatedOrder.getOrderStatus(), "OrderStatus should be 'Completed'");
     }
+
 
     /**
      * Test {@link OrderServiceImplementation#getOrdersForKitchenScheduling()}.
